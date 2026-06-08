@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection - users can read/write their own document
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Groups collection - users can read/write groups they're members of
+    match /groups/{groupId} {
+      allow read, write: if request.auth != null && 
+        (request.auth.uid in resource.data.memberIds || 
+         request.auth.uid == resource.data.createdBy);
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.createdBy;
+    }
+    
+    // Transactions collection - users can read/write their own transactions
+    match /transactions/{transactionId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.userId;
+    }
+    
+    // Group expenses collection - users can read/write expenses in groups they're members of
+    match /group_expenses/{expenseId} {
+      allow read: if request.auth != null &&
+        _isUserInGroup(request.auth.uid, resource.data.groupId);
+      allow create: if request.auth != null &&
+        _isUserInGroup(request.auth.uid, request.resource.data.groupId);
+      allow update, delete: if request.auth != null &&
+        _isUserInGroup(request.auth.uid, resource.data.groupId);
+    }
+    
+    // Helper function to check if user is in a group
+    function _isUserInGroup(userId, groupId) {
+      return exists(/databases/$(database)/documents/groups/$(groupId)) &&
+             userId in get(/databases/$(database)/documents/groups/$(groupId)).data.memberIds;
+    }
+    
+    // Budgets collection - users can read/write their own budgets
+    match /budgets/{budgetId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.userId;
+    }
+    
+    // Default deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

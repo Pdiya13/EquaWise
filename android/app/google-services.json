@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "545672182111",
+    "project_id": "equawise-c8be2",
+    "storage_bucket": "equawise-c8be2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545672182111:android:309f75df63b752904fdeea",
+        "android_client_info": {
+          "package_name": "com.company.equawise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4GUsyTzjmm_M_cpO7N0rvZFJi5B1zHL0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545672182111:android:bbd5fa7f174dbdbe4fdeea",
+        "android_client_info": {
+          "package_name": "com.equawise.equawise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4GUsyTzjmm_M_cpO7N0rvZFJi5B1zHL0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
